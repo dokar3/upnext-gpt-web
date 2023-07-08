@@ -1,5 +1,4 @@
 import { TrackInfo } from "@/util/TrackInfo";
-import { OpenAIStream, StreamingTextResponse } from "ai";
 import { NextResponse } from "next/server";
 import {
   ChatCompletionRequestMessage,
@@ -59,9 +58,7 @@ export async function POST(req: Request) {
       stream: false,
       messages: buildMessages(queueArray),
     });
-    const stream = OpenAIStream(response);
-    const textResponse = new StreamingTextResponse(stream);
-    const text = await textResponse.text();
+    const text = await response.text();
     return NextResponse.json({ ok: true, data: text });
   } catch (e) {
     console.error("Cannot get next track:", e);
