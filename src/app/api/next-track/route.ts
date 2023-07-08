@@ -11,10 +11,10 @@ const SYSTEM_PROMPT = `
 You are now a music recommender that generates new recommended tracks based on track history,
 
 History tracks are in format '[L/D]ARTIST - TITLE';
-'[L]' prefix presents user liked this track, you should recommend more track like this;
-'[D]' presents user disliked this track, you should recommend less track like this.
+'[L]' prefix presents user liked this track, you should recommend more tracks like this;
+'[D]' presents user disliked this track, you should recommend fewer tracks like this.
 
-Your replies should be in the format 'ARTIST - TITLE' format, no other content allowed.
+Your replies should be exactly one record in the format 'ARTIST - TITLE', no other content is allowed.
 `.trim();
 
 const config = new Configuration({
