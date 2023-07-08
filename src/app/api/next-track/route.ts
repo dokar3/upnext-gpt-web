@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     });
     const stream = OpenAIStream(response);
     const text = await new StreamingTextResponse(stream).text();
-    return NextResponse.json({ ok: true, data: text });
+    return NextResponse.json({ ok: true, data: responseTextToTrack(text) });
   } catch (e) {
     console.error("Cannot get next track:", e);
     return NextResponse.json({
@@ -95,4 +95,16 @@ function buildMessages(queue: TrackInfo[]): ChatCompletionRequestMessage[] {
   }
 
   return messages;
+}
+
+function responseTextToTrack(text: string): TrackInfo {
+  const separator = " - ";
+  const separatorAt = text.indexOf(separator);
+  if (separatorAt === -1) {
+    return { title: text, artist: "" };
+  }
+  return {
+    title: text.substring(separatorAt + separator.length),
+    artist: text.substring(0, separatorAt),
+  };
 }
