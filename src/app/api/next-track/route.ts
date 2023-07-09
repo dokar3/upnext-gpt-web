@@ -1,4 +1,5 @@
 import { TrackInfo } from "@/util/TrackInfo";
+import { HeaderUtil } from "@/util/headers";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { NextResponse } from "next/server";
 import {
@@ -53,14 +54,39 @@ export async function POST(req: Request) {
     queueArray.splice(0, queueArray.length - 20);
   }
 
+  const ip = HeaderUtil.getIpAddress(req);
+  if (ip == null) {
+    return NextResponse.json({ ok: false, message: "?" });
+  }
+
+  const port = new URL(req.url).port;
+
+  // Request new new request
+  const requestResult = await callInternalApi({
+    port: port,
+    action: "request",
+    body: { ip: ip },
+  });
+  if (requestResult.ok !== true) {
+    return NextResponse.json(requestResult);
+  }
+
   try {
     const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: process.env.OPENAI_MODEL ?? "gpt-3.5-turbo",
       stream: true,
       messages: buildMessages(queueArray),
     });
     const stream = OpenAIStream(response);
     const text = await new StreamingTextResponse(stream).text();
+
+    // Save the request record
+    await callInternalApi({
+      port: port,
+      action: "add-record",
+      body: { ip: ip },
+    });
+
     return NextResponse.json({ ok: true, data: responseTextToTrack(text) });
   } catch (e) {
     console.error("Cannot get next track:", e);
@@ -107,4 +133,34 @@ function responseTextToTrack(text: string): TrackInfo {
     title: text.substring(separatorAt + separator.length),
     artist: text.substring(0, separatorAt),
   };
+}
+
+async function callInternalApi({
+  port,
+  action,
+  body,
+}: {
+  port: string;
+  action: "request" | "add-record";
+  body: any;
+}) {
+  const baseUrl =
+    process.env.INTERNAL_API_BASE_URL +
+    (port != null && port.length > 0 ? `:${port}` : "");
+  try {
+    return await fetch(`${baseUrl}/api/next-track/calls`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.INTERNAL_API_CALL_TOKEN}`,
+      },
+      body: JSON.stringify({
+        action: action,
+        ...body,
+      }),
+    }).then((res) => res.json());
+  } catch (e) {
+    console.log("Failed to call internal api:", e);
+    return { ok: false, message: "Internal error: Failed to request." };
+  }
 }
