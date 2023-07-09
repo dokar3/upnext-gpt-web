@@ -50,8 +50,10 @@ export async function POST(req: Request) {
       message: "Require at least 1 track in 'queue'.",
     });
   }
-  if (queueArray.length > 20) {
-    queueArray.splice(0, queueArray.length - 20);
+
+  const maxTracks = parseInt(process.env.MAX_HISTORY_TRACKS ?? "20");
+  if (queueArray.length > maxTracks) {
+    queueArray.splice(maxTracks, queueArray.length - maxTracks);
   }
 
   const ip = HeaderUtil.getIpAddress(req);
