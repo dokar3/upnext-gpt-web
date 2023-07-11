@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="bg-black flex min-h-screen flex-col items-center justify-between p-8">
@@ -53,7 +55,12 @@ export default function Home() {
       </div>
 
       <div className="mt-12 w-full flex justify-between">
-        <div>© 2023 UpNext GPT</div>
+        <div>
+          © 2023 UpNext GPT
+          <Link href="/privacy" className="ml-4 hover:underline">
+            Privacy
+          </Link>
+        </div>
         <div className="flex items-center">
           <a
             href="https://twitter.com/EnDeepFour"
