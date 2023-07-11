@@ -15,7 +15,7 @@ History tracks are in format '[L/D]ARTIST - TITLE';
 '[L]' prefix presents user liked this track, you should recommend more tracks like this;
 '[D]' presents user disliked this track, you should recommend fewer tracks like this.
 
-Your replies should be exactly one record in the format 'ARTIST - TITLE', no other content is allowed.
+Your replies should be exactly one record in the format 'ARTIST - TITLE', no '[L/D]' prefix, no other content is allowed.
 `.trim();
 
 const config = new Configuration({
