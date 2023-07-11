@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Jost } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "UpNext GPT",
@@ -16,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={jost.className}>{children}</body>
+      <body className={jost.className}>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
