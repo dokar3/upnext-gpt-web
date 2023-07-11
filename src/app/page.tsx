@@ -2,7 +2,8 @@ export default function Home() {
   return (
     <main className="bg-black flex min-h-screen flex-col items-center justify-between p-8">
       <div className="flex flex-col items-center">
-        <div className="text-5xl font-bold">UpNext GPT</div>
+        <img className="w-24 h-24" src="./icon-web.svg" />
+        <div className="mt-4 text-5xl font-bold">UpNext GPT</div>
         <div className="mt-4 text-lg">
           Your playlist, powered by <span className="font-bold">ChatGPT</span>.
         </div>
