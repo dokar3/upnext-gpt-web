@@ -4,7 +4,7 @@ export default function Home() {
       <div className="flex flex-col items-center">
         <div className="text-5xl font-bold">UpNext GPT</div>
         <div className="mt-4 text-lg">
-          Your playlist powered by <span className="font-bold">ChatGPT</span>.
+          Your playlist, powered by <span className="font-bold">ChatGPT</span>.
         </div>
         <div className="mt-4 text-lg">
           Free and{" "}
