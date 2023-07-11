@@ -1,10 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Jost } from "next/font/google";
 
 export const metadata: Metadata = {
   title: "UpNext GPT",
   description: "Your playlist powered by ChatGPT.",
 };
+
+const jost = Jost({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -13,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={jost.className}>{children}</body>
     </html>
   );
 }
