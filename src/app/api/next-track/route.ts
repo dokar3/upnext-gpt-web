@@ -77,6 +77,9 @@ export async function POST(req: Request) {
     const response = await openai.createChatCompletion({
       model: process.env.OPENAI_MODEL ?? "gpt-3.5-turbo",
       stream: true,
+      temperature: 1.5,
+      presence_penalty: 1,
+      frequency_penalty: 1,
       messages: buildMessages(queueArray),
     });
     const stream = OpenAIStream(response);
