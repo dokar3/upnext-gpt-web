@@ -21,15 +21,32 @@ export default function Home() {
           !
         </div>
 
-        <a
-          className="mt-12"
-          href="https://github.com/dokar3/upnext-gpt/releases"
-          target="_blank"
-        >
-          <button className="py-2 px-4 rounded-full bg-primary-normal hover:bg-primary-darken">
-            Download Android App
-          </button>
-        </a>
+        <div className="mt-12 text-2xl font-bold">Downloads (Android)</div>
+
+        <div className="mt-12 flex items-center">
+          <a
+            href="https://play.google.com/store/apps/details?id=com.dokar.upnextgpt&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+            target="_blank"
+          >
+            <img
+              alt="Get it on Google Play"
+              src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+              className="h-16"
+            />
+          </a>
+
+          <p className="mr-4">OR</p>
+
+          <a
+            href="https://github.com/dokar3/upnext-gpt/releases"
+            target="_blank"
+          >
+            <button className="py-2 px-4 flex items-center rounded-md border-2 border-gray-500 hover:bg-primary-darken hover:border-primary-darken">
+              <GithubIcon className="mr-2 fill-white" />
+              Github
+            </button>
+          </a>
+        </div>
 
         <div className="mt-12 mb-6 text-2xl font-bold">Screenshots</div>
 
@@ -67,14 +84,7 @@ export default function Home() {
             target="_blank"
             className="mr-8 fill-white"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.825 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489z" />
-            </svg>
+            <GithubIcon />
           </a>
 
           <a href="https://github.com/dokar3/upnext-gpt" target="_blank">
@@ -111,5 +121,19 @@ function Screenshot({
         <img src={src} />
       </div>
     </div>
+  );
+}
+
+function GithubIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      className={className}
+    >
+      <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.825 0 1.572.349 2.096.907.654-.128 1.27-.368 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489z" />
+    </svg>
   );
 }
