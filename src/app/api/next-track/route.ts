@@ -1,29 +1,15 @@
 import { TrackInfo } from "@/util/TrackInfo";
 import { HeaderUtil } from "@/util/headers";
-import { OpenAIStream, StreamingTextResponse } from "ai";
 import { NextResponse } from "next/server";
-import {
-  ChatCompletionRequestMessage,
-  Configuration,
-  OpenAIApi,
-} from "openai-edge";
-
-const SYSTEM_PROMPT = `
-You are now a music recommender that generates new recommended tracks based on track history,
-
-History tracks are in format '[L/D]ARTIST - TITLE';
-'[L]' prefix presents user liked this track, you should recommend more tracks like this;
-'[D]' presents user disliked this track, you should recommend fewer tracks like this.
-
-Your replies should be exactly one record in the format 'ARTIST - TITLE', no '[L/D]' prefix, no other content is allowed.
-`.trim();
-
-const config = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(config);
+import { GoogleGenAITrackRecommender } from "./TrackRecommender.google";
+import { OpenAITrackRecommender } from "./TrackRecommender.openai";
 
 export const runtime = "edge";
+
+const trackRecommender =
+  process.env.MODEL_PROVIDER === "google"
+    ? new GoogleGenAITrackRecommender()
+    : new OpenAITrackRecommender();
 
 export async function POST(req: Request) {
   const json = await req.text();
@@ -74,25 +60,14 @@ export async function POST(req: Request) {
   }
 
   try {
-    const response = await openai.createChatCompletion({
-      model: process.env.OPENAI_MODEL ?? "gpt-3.5-turbo",
-      stream: true,
-      temperature: 1.5,
-      presence_penalty: 1,
-      frequency_penalty: 1,
-      messages: buildMessages(queueArray),
-    });
-    const stream = OpenAIStream(response);
-    const text = await new StreamingTextResponse(stream).text();
-
+    const nextTrack = trackRecommender.next(queueArray);
     // Save the request record
     await callInternalApi({
       port: port,
       action: "add-record",
       body: { ip: ip },
     });
-
-    return NextResponse.json({ ok: true, data: responseTextToTrack(text) });
+    return NextResponse.json({ ok: true, data: nextTrack });
   } catch (e) {
     console.error("Cannot get next track:", e);
     return NextResponse.json({
@@ -100,44 +75,6 @@ export async function POST(req: Request) {
       message: "Cannot get next track now.",
     });
   }
-}
-
-function buildMessages(queue: TrackInfo[]): ChatCompletionRequestMessage[] {
-  const messages: ChatCompletionRequestMessage[] = [
-    {
-      role: "system",
-      content: SYSTEM_PROMPT,
-    },
-  ];
-
-  for (const track of queue) {
-    let prefix: string;
-    if (track.liked) {
-      prefix = "[L]";
-    } else if (track.disliked) {
-      prefix = "[D]";
-    } else {
-      prefix = "";
-    }
-    messages.push({
-      role: "user",
-      content: `${prefix}${track.artist} - ${track.title}`,
-    });
-  }
-
-  return messages;
-}
-
-function responseTextToTrack(text: string): TrackInfo {
-  const separator = " - ";
-  const separatorAt = text.indexOf(separator);
-  if (separatorAt === -1) {
-    return { title: text, artist: "" };
-  }
-  return {
-    title: text.substring(separatorAt + separator.length),
-    artist: text.substring(0, separatorAt),
-  };
 }
 
 async function callInternalApi({

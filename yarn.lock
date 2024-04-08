@@ -70,6 +70,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@google/generative-ai@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@google/generative-ai@npm:0.5.0"
+  checksum: 5f3b4bb968932de9108c56546ecbbf42697698b6614f3305984b76a8d9aa69423864d3db7a26e6987470d6f2bf239b8a3e1275e895ca9843563c6b407cd999fa
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.10":
   version: 0.11.10
   resolution: "@humanwhocodes/config-array@npm:0.11.10"
@@ -4714,6 +4721,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "upnext-gpt-web@workspace:."
   dependencies:
+    "@google/generative-ai": ^0.5.0
     "@prisma/client": ^4.16.2
     "@types/node": 20.4.1
     "@types/react": 18.2.14
