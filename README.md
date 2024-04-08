@@ -5,8 +5,10 @@ The website and backend of [upnext-gpt](https://github.com/dokar3/upnext-gpt).
 1. Fork this project.
 2. Prepare keys/tokens required by third-party services in the `.env`.
 3. Goto [Vercel](https://vercel.com/) and create a new project by importing forked repo.
-4. Fill your environment variables, set build command to `npx prisma generate && yarn build` and install command to `yarn`.
-5. Deploy.
+4. Fill your environment variables. `ENABLE_EXPERIMENTAL_COREPACK = 1` is needed to enable latest version of yarn.
+5. Set build command to `npx prisma generate && yarn build` and install command to `yarn`.
+6. Deploy. 
+7. If success, your own API backend will be available through `https://YOUR_PROJECT.vercel.app`. You can use it in the [UpNext GPT](https://github.com/dokar3/upnext-gpt) app.
 
 # License
 
