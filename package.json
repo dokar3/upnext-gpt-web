@@ -30,5 +30,6 @@
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "prisma": "^4.16.2"
-  }
+  },
+  "packageManager": "yarn@4.1.1"
 }

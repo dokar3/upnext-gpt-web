@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import { DateUtil } from "../../../../util/date";
 import prisma from "../../../../../lib/prisma";
 
-// Run in node.js
+// Node runtime
+
 export async function POST(req: Request) {
   const authToken = req.headers.get("authorization");
   if (authToken !== `Bearer ${process.env.INTERNAL_API_CALL_TOKEN}`) {
@@ -29,7 +30,7 @@ export async function POST(req: Request) {
 
   switch (action) {
     case "request":
-      return requestNewRequest(ip);
+      return newRequest(ip);
     case "add-record":
       return addRecord(ip);
     default:
@@ -43,8 +44,8 @@ export async function POST(req: Request) {
   }
 }
 
-async function requestNewRequest(ip: string): Promise<Response> {
-  // Check current day requests
+async function newRequest(ip: string): Promise<Response> {
+  // Check the current day requests
   const [dayStart, dayEnd] = DateUtil.getStartAndEndOfDayMs();
   const dayRequests = await countNextTrackRequest({
     ip: ip,
@@ -62,7 +63,7 @@ async function requestNewRequest(ip: string): Promise<Response> {
     );
   }
 
-  // Check current minute requests
+  // Check the current minute requests
   const [minuteStart, minuteEnd] = DateUtil.getCurrentMinuteBounds();
   const minuteRequests = await countNextTrackRequest({
     ip: ip,

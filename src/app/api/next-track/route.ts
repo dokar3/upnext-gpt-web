@@ -60,7 +60,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const nextTrack = trackRecommender.next(queueArray);
+    const nextTrack = await trackRecommender.next(queueArray);
     // Save the request record
     await callInternalApi({
       port: port,
