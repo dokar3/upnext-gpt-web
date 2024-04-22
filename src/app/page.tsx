@@ -73,7 +73,7 @@ export default function Home() {
 
       <div className="mt-12 w-full flex justify-between">
         <div>
-          © 2023 UpNext GPT
+          © 2024 UpNext GPT
           <Link href="/privacy" className="ml-4 hover:underline">
             Privacy
           </Link>
